@@ -41,7 +41,7 @@ class Home extends Component {
     ));
     return (
       <div>
-        <ul class="centered">{peepsList}</ul>
+        <ul className="centered">{peepsList}</ul>
       </div>
     );
   }
@@ -49,9 +49,11 @@ class Home extends Component {
   render() {
     var userInfo = <NameForm onSubmit={this.onFormSubmit} />;
     var peepFeed = null;
-    this.state.seshSessionKey != ""
-      ? (peepFeed = this.renderPeeps())
-      : (peepFeed = null);
+    if (this.state.seshSessionKey == "") peepFeed = "Login to view peeps...";
+    if (this.state.seshSessionKey != "") {
+      userInfo = null;
+      peepFeed = this.renderPeeps();
+    }
     return (
       <React.Fragment>
         <div>{userInfo}</div>
