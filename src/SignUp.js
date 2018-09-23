@@ -8,7 +8,8 @@ class SignUp extends React.Component {
       password: "",
       isSignedUp: false
     };
-    this.state.handleInputChange = this.handleInputChange.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleInputChange(event) {
@@ -25,38 +26,52 @@ class SignUp extends React.Component {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        user: { handle: this.state.username, password: this.state.password }
+        user: {
+          handle: this.state.username,
+          password: this.state.password
+        }
       })
     })
       .then(res => res.json())
       .then(result => console.log(result));
+    if (this.state.username != "" && this.state.password != "") {
+      this.isSignedUp = true;
+    }
+    this.render();
   }
 
   render() {
+    var message = "";
+    this.isSignedUp
+      ? (message = "Sign up successful")
+      : (message = "Enter details");
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Name:
-          <input
-            type="text"
-            name="username"
-            value={this.state.username}
-            onChange={this.handleInputChange}
-          />
-        </label>
-        <br />
-        <br />
-        <label>
-          Password:
-          <input
-            type="text"
-            name="password"
-            value={this.state.password}
-            onChange={this.handleInputChange}
-          />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
+      <React.Fragment>
+        <h3>{message}</h3>
+        <form onSubmit={this.handleSubmit}>
+          <label>
+            Name:
+            <input
+              type="text"
+              name="username"
+              value={this.state.username}
+              onChange={this.handleInputChange}
+            />
+          </label>
+          <br />
+          <br />
+          <label>
+            Password:
+            <input
+              type="text"
+              name="password"
+              value={this.state.password}
+              onChange={this.handleInputChange}
+            />
+          </label>
+          <input type="submit" value="Submit" />
+        </form>
+      </React.Fragment>
     );
   }
 }
